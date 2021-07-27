@@ -15,6 +15,7 @@ from libs.crud_methods import CrudMethods
 
 class TestBasicAuth(unittest.TestCase):
 
+    @classmethod
     def setUpClass(cls) -> None:
         config = Config()
         cls.cm = CrudMethods()
@@ -25,15 +26,41 @@ class TestBasicAuth(unittest.TestCase):
     @backoff.on_exception(backoff.expo, requests.exceptions.RequestException, max_time=10)
     def test_get_api_key_response_200(self):
         r = self.__class__().cm.request_method("POST",
-                                   self.url,
-                                   "/token",
-                                   None,
-                                   {HttpHeaders.ACCEPT: "application/json"},
-                                   HTTPBasicAuth(self.username, self.password))
+                                               self.url,
+                                               "/token",
+                                               "",
+                                               None,
+                                               {HttpHeaders.ACCEPT: "application/json"},
+                                               HTTPBasicAuth(self.username, self.password))
         with soft_assertions():
             assert_that(r.status_code).is_equal_to(200)
             assert_that(r.json()["key"]).is_not_empty()
-        print(r.json()["key"])
+
+    @backoff.on_exception(backoff.expo, requests.exceptions.RequestException, max_time=10)
+    def test_get_api_key_invalid_username_response_400(self):
+        r = self.__class__().cm.request_method("POST",
+                                               self.url,
+                                               "/token",
+                                               "",
+                                               None,
+                                               {HttpHeaders.ACCEPT: "application/json"},
+                                               HTTPBasicAuth("invalid", self.password))
+        with soft_assertions():
+            assert_that(r.status_code).is_equal_to(400)
+            assert_that(r.json()["message"]).is_equal_to("invalid username or password")
+
+    @backoff.on_exception(backoff.expo, requests.exceptions.RequestException, max_time=10)
+    def test_get_api_key_invalid_password_response_400(self):
+        r = self.__class__().cm.request_method("POST",
+                                               self.url,
+                                               "/token",
+                                               "",
+                                               None,
+                                               {HttpHeaders.ACCEPT: "application/json"},
+                                               HTTPBasicAuth("invalid", self.password))
+        with soft_assertions():
+            assert_that(r.status_code).is_equal_to(400)
+            assert_that(r.json()["message"]).is_equal_to("invalid username or password")
 
 
 if __name__ == '__main__':
