@@ -1,25 +1,68 @@
 # API-Testing-for-Fun-and-Profit_2
 
-README.md - nie rób list of content a punktu zrób jako odpowiednie nagłówki (poczytaj jak się to w markdown robi). Będzie bardziej przejrzyste i zbliżone do tego jak wygąda to w innych repo. Możesz też zaznaczyć, do jakiego systemu odnosi się instrukcja (dobrze widzę, że to Windows?)
+### Python version and installation
 
-pliki z testami powinny być w oddzielnym folderze
+Tests are written in Python 3.8+ and it should be ran on this version or higher.
+User can download newest version of Python at [Python download site](https://www.python.org/downloads/).
 
-używająs pytest.ini można wymusić, żeby pliki z testami nie zaczynały się od 'test_'
+Install [PIP](https://pypi.org/project/pip/).
 
-zamiast 2 folderów crud i helpers zrób jeden libs i tam wrzuć pliki z tych 2 folderów
+### Installing required packages and tools
 
-crud_methods.py - zmienne URL, USER, PASSWORD wyrzucić do zmiennych środowiskowych, można się wspomóc biblioteką dotenv to obsługi zmiennych środowiskowych z pliku .env
+After cloning [API Testing for Fun and Profit](https://github.com/PyShaman/API-Testing-for-Fun-and-Profit.git) repository locally user should enter
+repository folder and create separate virtual environment for this project by using following command:
+```
+$ python -m venv venv
+```
+Python will create new directory called venv and install there basic packages. Next step is to activate virtual environment:
+```
+PS > ./venv/Scripts/Activate.ps1
+```
+for Windows systems or
+```
+$ ./venv/Scripts/activate
+```
+for Linux.
+When virtual environment will be activated the user will see additional mark at console:
+```
+(venv) path\API-Testing-for-Fun-and-Profit >
+```
+Next step is to install required packages using following command:
+```
+PS > pip install -r requirements.txt
+```
+for Windows systems or
+```
+$ pip3 install -r requirements.txt
+```
+for Linux.
 
-ten sam plik - pozostań przy oryginalnych get/post itp. Tkod tych metod się mocno powiela i można tutaj wykorzystać metodę requests.request('GET') zamiast requests.get i stworzyć sobie dodatkową nadrzętną metodę (za dużo pisania żeby podać przykład i jest szansa, że wymyśłisz, jak nie pytaj)
+This will automatically download and install all necessary packages.
 
-client_data.py - zamiast tworzenia słownika, proponuję stworzyć klasę używając @dataclass, później można użyc na tym metody asdict() i otrzymasz ten sam słownik, który zwracasz (asdict używj podczas wysyłki klasy User)
+### Usage:
 
-w testach, najpierw sprawdź status code odpowiedzi, a poźniej dopiero dane z json(), warto używać biblioteki assertpy bo ma with soft_assert() i możesz sprawdzić wiele asserci na raz (tak jak masz teraz napisane, jeśli dev źle zakoduje i zwróci zły kod błędu, to nie sprawdzisz czy przyszły dane)
+To run all tests use following command:
+```
+$ pytest -v
+```
 
-generalnie znów uwaga co do zmiennych URL, USER, PASSWORD (takie dane konfiguracyjne warto mieś w oddzielnej klasie np. Config().URL i zaczytywać ze zmiennych środowiskowych (opisałem to wyżej))
+### Output:
 
-nie używaj globalsów, jak w setup class zrobisz cls.api_key to w testach możesz się do tego odnieść przez self.__class__.api_key
+The tests will perform API tests for non-existing endpoints.
 
-CLEANUP powinien być taką samą zmienną jak cm w ramach klasy ClientTests
+### Generating Allure Reports
 
-odwołanie jak wyżej przez _class_ załatwi problem z ewentualnym brakiem dodawanych rzeczy
+To generate Allure Reports please follow [installation guide](https://docs.qameta.io/allure/#_installing_a_commandline).
+
+To initiate Allure Listener use following command:
+```
+$ pytest --alluredir=/tmp/my_allure_results
+```
+To see actual report use following command:
+```
+$ allure serve /tmp/my_allure_results
+```
+
+### Reproduce swagger.yml file
+
+To reproduce swagger.yml file copy and paste content of file in the following [Swagger Editor](https://editor.swagger.io/)

@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 
 
 class Config:
-    load_dotenv("../.env")
-    URL = os.environ["URL"]
-    USERNAME = os.environ["USERNAME"]
-    PASSWORD = os.environ["PASSWORD"]
+    load_dotenv()
+    URL = os.environ.get("URL")
+    USR = os.environ.get("USR")
+    PWD = os.environ.get("PWD")
