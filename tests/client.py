@@ -26,7 +26,6 @@ class TestClientEndpoint(unittest.TestCase):
             cls.url,
             "/token",
             "",
-            None,
             {HttpHeaders.ACCEPT: "application/json"},
             HTTPBasicAuth(cls.username, cls.password),
         ).json()["key"]
@@ -37,9 +36,7 @@ class TestClientEndpoint(unittest.TestCase):
             self.url,
             "/clients",
             "",
-            None,
             {HttpHeaders.ACCEPT: "application/json", "X-API-KEY": self.api_key},
-            None,
         )
         with soft_assertions():
             assert_that(r.status_code).is_equal_to(200)
@@ -50,9 +47,7 @@ class TestClientEndpoint(unittest.TestCase):
             self.url,
             "/clients",
             "",
-            None,
             {HttpHeaders.ACCEPT: "application/json", "X-API-KEY": "invalid_api_key"},
-            None,
         )
         with soft_assertions():
             assert_that(r.status_code).is_equal_to(403)
@@ -64,9 +59,7 @@ class TestClientEndpoint(unittest.TestCase):
             self.url,
             "/clients",
             "",
-            None,
             {HttpHeaders.ACCEPT: "application/json", "X-API-KEY": None},
-            None,
         )
         with soft_assertions():
             assert_that(r.status_code).is_equal_to(403)

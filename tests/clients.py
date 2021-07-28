@@ -28,7 +28,6 @@ class TestClientsEndpoint(unittest.TestCase):
             cls.url,
             "/token",
             "",
-            None,
             {HttpHeaders.ACCEPT: "application/json"},
             HTTPBasicAuth(cls.username, cls.password),
         ).json()["key"]
@@ -41,9 +40,7 @@ class TestClientsEndpoint(unittest.TestCase):
                 cls.url,
                 "/client",
                 f"/{client_id}",
-                None,
                 {HttpHeaders.ACCEPT: "application/json", "X-API-KEY": cls.api_key},
-                None,
             )
             assert_that(
                 cls.cm.request_method(
@@ -51,9 +48,7 @@ class TestClientsEndpoint(unittest.TestCase):
                     cls.url,
                     "/client",
                     f"/{client_id}",
-                    None,
                     {HttpHeaders.ACCEPT: "application/json", "X-API-KEY": cls.api_key},
-                    None,
                 ).status_code
             ).is_equal_to(404)
 
@@ -63,9 +58,8 @@ class TestClientsEndpoint(unittest.TestCase):
             self.url,
             "/client",
             "",
-            return_client_data(),
             {HttpHeaders.ACCEPT: "application/json", "X-API-KEY": self.api_key},
-            None,
+            json=return_client_data(),
         )
         self.__class__().cleanup.append(r.json()["id"])
         re = self.__class__().cm.request_method(
@@ -73,9 +67,7 @@ class TestClientsEndpoint(unittest.TestCase):
             self.url,
             "/client",
             f"/{r.json()['id']}",
-            None,
             {HttpHeaders.ACCEPT: "application/json", "X-API-KEY": self.api_key},
-            None,
         )
         with soft_assertions():
             assert_that(r.status_code).is_equal_to(200)
@@ -88,9 +80,8 @@ class TestClientsEndpoint(unittest.TestCase):
             self.url,
             "/client",
             "",
-            return_client_data(),
             {HttpHeaders.ACCEPT: "application/json", "X-API-KEY": self.api_key},
-            None,
+            json=return_client_data(),
         )
         self.__class__().cleanup.append(r.json()["id"])
         re = self.__class__().cm.request_method(
@@ -98,9 +89,7 @@ class TestClientsEndpoint(unittest.TestCase):
             self.url,
             "/client",
             f"/{r.json()['id']}",
-            None,
             {HttpHeaders.ACCEPT: "application/json", "X-API-KEY": "invalid"},
-            None,
         )
         with soft_assertions():
             assert_that(r.status_code).is_equal_to(200)
@@ -113,9 +102,8 @@ class TestClientsEndpoint(unittest.TestCase):
             self.url,
             "/client",
             "",
-            return_client_data(),
             {HttpHeaders.ACCEPT: "application/json", "X-API-KEY": self.api_key},
-            None,
+            json=return_client_data(),
         )
         self.__class__().cleanup.append(r.json()["id"])
         re = self.__class__().cm.request_method(
@@ -123,9 +111,7 @@ class TestClientsEndpoint(unittest.TestCase):
             self.url,
             "/client",
             f"/{r.json()['id']}",
-            None,
             {HttpHeaders.ACCEPT: "application/json", "X-API-KEY": None},
-            None,
         )
         with soft_assertions():
             assert_that(r.status_code).is_equal_to(200)
@@ -138,9 +124,7 @@ class TestClientsEndpoint(unittest.TestCase):
             self.url,
             "/client",
             "/123",
-            None,
             {HttpHeaders.ACCEPT: "application/json", "X-API-KEY": self.api_key},
-            None,
         )
         with soft_assertions():
             assert_that(r.status_code).is_equal_to(404)
@@ -152,9 +136,8 @@ class TestClientsEndpoint(unittest.TestCase):
             self.url,
             "/client",
             "",
-            return_client_data(),
             {HttpHeaders.ACCEPT: "application/json", "X-API-KEY": self.api_key},
-            None,
+            json=return_client_data(),
         )
         self.__class__().cleanup.append(r.json()["id"])
         re = self.__class__().cm.request_method(
@@ -162,9 +145,8 @@ class TestClientsEndpoint(unittest.TestCase):
             self.url,
             "/client",
             f"/{r.json()['id']}",
-            return_client_data(),
             {HttpHeaders.ACCEPT: "application/json", "X-API-KEY": self.api_key},
-            None,
+            json=return_client_data(),
         )
         with soft_assertions():
             assert_that(r.status_code).is_equal_to(200)
@@ -178,9 +160,8 @@ class TestClientsEndpoint(unittest.TestCase):
             self.url,
             "/client",
             "",
-            return_client_data(),
             {HttpHeaders.ACCEPT: "application/json", "X-API-KEY": self.api_key},
-            None,
+            json=return_client_data(),
         )
         self.__class__().cleanup.append(r.json()["id"])
         re = self.__class__().cm.request_method(
@@ -188,9 +169,8 @@ class TestClientsEndpoint(unittest.TestCase):
             self.url,
             "/client",
             f"/{r.json()['id']}",
-            {},
             {HttpHeaders.ACCEPT: "application/json", "X-API-KEY": self.api_key},
-            None,
+            json={},
         )
         with soft_assertions():
             assert_that(r.status_code).is_equal_to(200)
@@ -203,9 +183,8 @@ class TestClientsEndpoint(unittest.TestCase):
             self.url,
             "/client",
             "",
-            return_client_data(),
             {HttpHeaders.ACCEPT: "application/json", "X-API-KEY": self.api_key},
-            None,
+            json=return_client_data(),
         )
         self.__class__().cleanup.append(r.json()["id"])
         re = self.__class__().cm.request_method(
@@ -213,9 +192,8 @@ class TestClientsEndpoint(unittest.TestCase):
             self.url,
             "/client",
             f"/{r.json()['id']}",
-            {"lastName": "Boruta", "phone": "+48 22 632 1512"},
             {HttpHeaders.ACCEPT: "application/json", "X-API-KEY": self.api_key},
-            None,
+            json={"lastName": "Boruta", "phone": "+48 22 632 1512"},
         )
         with soft_assertions():
             assert_that(r.status_code).is_equal_to(200)
@@ -228,9 +206,8 @@ class TestClientsEndpoint(unittest.TestCase):
             self.url,
             "/client",
             "",
-            return_client_data(),
             {HttpHeaders.ACCEPT: "application/json", "X-API-KEY": self.api_key},
-            None,
+            json=return_client_data(),
         )
         self.__class__().cleanup.append(r.json()["id"])
         re = self.__class__().cm.request_method(
@@ -238,9 +215,8 @@ class TestClientsEndpoint(unittest.TestCase):
             self.url,
             "/client",
             f"/{r.json()['id']}",
-            {"firstName": "Boruta", "phone": "+48 22 632 1512"},
             {HttpHeaders.ACCEPT: "application/json", "X-API-KEY": self.api_key},
-            None,
+            json={"firstName": "Boruta", "phone": "+48 22 632 1512"},
         )
         with soft_assertions():
             assert_that(r.status_code).is_equal_to(200)
@@ -253,9 +229,8 @@ class TestClientsEndpoint(unittest.TestCase):
             self.url,
             "/client",
             "",
-            return_client_data(),
             {HttpHeaders.ACCEPT: "application/json", "X-API-KEY": self.api_key},
-            None,
+            json=return_client_data(),
         )
         self.__class__().cleanup.append(r.json()["id"])
         re = self.__class__().cm.request_method(
@@ -263,9 +238,8 @@ class TestClientsEndpoint(unittest.TestCase):
             self.url,
             "/client",
             f"/{r.json()['id']}",
-            {"firstName": "Aldona", "lastName": "Boruta"},
             {HttpHeaders.ACCEPT: "application/json", "X-API-KEY": self.api_key},
-            None,
+            json={"firstName": "Aldona", "lastName": "Boruta"},
         )
         with soft_assertions():
             assert_that(r.status_code).is_equal_to(200)
@@ -278,9 +252,8 @@ class TestClientsEndpoint(unittest.TestCase):
             self.url,
             "/client",
             "",
-            return_client_data(),
             {HttpHeaders.ACCEPT: "application/json", "X-API-KEY": self.api_key},
-            None,
+            json=return_client_data(),
         )
         self.__class__().cleanup.append(r.json()["id"])
         re = self.__class__().cm.request_method(
@@ -288,9 +261,8 @@ class TestClientsEndpoint(unittest.TestCase):
             self.url,
             "/client",
             f"/{r.json()['id']}",
-            {"lastName": "Boruta", "phone": "+48 22 632 1512"},
             {HttpHeaders.ACCEPT: "application/json", "X-API-KEY": "invalid"},
-            None,
+            json={"lastName": "Boruta", "phone": "+48 22 632 1512"},
         )
         with soft_assertions():
             assert_that(r.status_code).is_equal_to(200)
@@ -303,9 +275,8 @@ class TestClientsEndpoint(unittest.TestCase):
             self.url,
             "/client",
             "",
-            return_client_data(),
             {HttpHeaders.ACCEPT: "application/json", "X-API-KEY": self.api_key},
-            None,
+            json=return_client_data(),
         )
         self.__class__().cleanup.append(r.json()["id"])
         re = self.__class__().cm.request_method(
@@ -313,9 +284,8 @@ class TestClientsEndpoint(unittest.TestCase):
             self.url,
             "/client",
             f"/{r.json()['id']}",
-            {"lastName": "Boruta", "phone": "+48 22 632 1512"},
             {HttpHeaders.ACCEPT: "application/json", "X-API-KEY": None},
-            None,
+            json={"lastName": "Boruta", "phone": "+48 22 632 1512"},
         )
         with soft_assertions():
             assert_that(r.status_code).is_equal_to(200)
@@ -328,18 +298,15 @@ class TestClientsEndpoint(unittest.TestCase):
             self.url,
             "/client",
             "",
-            return_client_data(),
             {HttpHeaders.ACCEPT: "application/json", "X-API-KEY": self.api_key},
-            None,
+            json=return_client_data(),
         )
         re = self.__class__().cm.request_method(
             "DELETE",
             self.url,
             "/client",
             f"/{r.json()['id']}",
-            None,
             {HttpHeaders.ACCEPT: "application/json", "X-API-KEY": self.api_key},
-            None,
         )
         with soft_assertions():
             assert_that(r.status_code).is_equal_to(200)
@@ -352,9 +319,8 @@ class TestClientsEndpoint(unittest.TestCase):
             self.url,
             "/client",
             "",
-            return_client_data(),
             {HttpHeaders.ACCEPT: "application/json", "X-API-KEY": self.api_key},
-            None,
+            json=return_client_data(),
         )
         self.__class__().cleanup.append(r.json()["id"])
         re = self.__class__().cm.request_method(
@@ -362,9 +328,7 @@ class TestClientsEndpoint(unittest.TestCase):
             self.url,
             "/client",
             f"/{r.json()['id']}",
-            None,
             {HttpHeaders.ACCEPT: "application/json", "X-API-KEY": "invalid"},
-            None,
         )
         with soft_assertions():
             assert_that(r.status_code).is_equal_to(200)
@@ -377,9 +341,8 @@ class TestClientsEndpoint(unittest.TestCase):
             self.url,
             "/client",
             "",
-            return_client_data(),
             {HttpHeaders.ACCEPT: "application/json", "X-API-KEY": self.api_key},
-            None,
+            json=return_client_data(),
         )
         self.__class__().cleanup.append(r.json()["id"])
         re = self.__class__().cm.request_method(
@@ -387,9 +350,7 @@ class TestClientsEndpoint(unittest.TestCase):
             self.url,
             "/client",
             f"/{r.json()['id']}",
-            None,
             {HttpHeaders.ACCEPT: "application/json", "X-API-KEY": None},
-            None,
         )
         with soft_assertions():
             assert_that(r.status_code).is_equal_to(200)
@@ -402,9 +363,7 @@ class TestClientsEndpoint(unittest.TestCase):
             self.url,
             "/client",
             f"/777",
-            None,
             {HttpHeaders.ACCEPT: "application/json", "X-API-KEY": self.api_key},
-            None,
         )
         with soft_assertions():
             assert_that(r.status_code).is_equal_to(404)
@@ -416,9 +375,12 @@ class TestClientsEndpoint(unittest.TestCase):
             self.url,
             "/client",
             "",
-            {"firstName": "a" * 51, "lastName": "Boruta", "phone": "+48 22 632 1512"},
             {HttpHeaders.ACCEPT: "application/json", "X-API-KEY": self.api_key},
-            None,
+            json={
+                "firstName": "a" * 51,
+                "lastName": "Boruta",
+                "phone": "+48 22 632 1512",
+            },
         )
         self.__class__().cleanup.append(r.json()["id"])
         with soft_assertions():
@@ -431,13 +393,12 @@ class TestClientsEndpoint(unittest.TestCase):
             self.url,
             "/client",
             "",
-            {
+            {HttpHeaders.ACCEPT: "application/json", "X-API-KEY": self.api_key},
+            json={
                 "firstName": "Boruta",
                 "lastName": "Boruta" * 20,
                 "phone": "+48 22 632 1512",
             },
-            {HttpHeaders.ACCEPT: "application/json", "X-API-KEY": self.api_key},
-            None,
         )
         self.__class__().cleanup.append(r.json()["id"])
         with soft_assertions():
@@ -450,9 +411,8 @@ class TestClientsEndpoint(unittest.TestCase):
             self.url,
             "/client",
             "",
-            {"firstName": "Boruta", "lastName": "Boruta", "phone": "123" * 200},
             {HttpHeaders.ACCEPT: "application/json", "X-API-KEY": self.api_key},
-            None,
+            json={"firstName": "Boruta", "lastName": "Boruta", "phone": "123" * 200},
         )
         self.__class__().cleanup.append(r.json()["id"])
         with soft_assertions():
@@ -465,9 +425,8 @@ class TestClientsEndpoint(unittest.TestCase):
             self.url,
             "/client",
             "",
-            return_client_data().pop("firstName"),
             {HttpHeaders.ACCEPT: "application/json", "X-API-KEY": self.api_key},
-            None,
+            json=return_client_data().pop("firstName"),
         )
         with soft_assertions():
             assert_that(r.status_code).is_equal_to(500)

@@ -28,7 +28,6 @@ class TestTokenEndpoint(unittest.TestCase):
             self.__class__().url,
             "/token",
             "",
-            None,
             {HttpHeaders.ACCEPT: "application/json"},
             HTTPBasicAuth(self.username, self.password),
         )
@@ -42,7 +41,6 @@ class TestTokenEndpoint(unittest.TestCase):
             self.url,
             "/token",
             "",
-            None,
             {HttpHeaders.ACCEPT: "application/json"},
             HTTPBasicAuth("invalid", self.password),
         )
@@ -56,7 +54,6 @@ class TestTokenEndpoint(unittest.TestCase):
             self.url,
             "/token",
             "",
-            None,
             {HttpHeaders.ACCEPT: "application/json"},
             HTTPBasicAuth(self.username, "invalid"),
         )

@@ -10,11 +10,11 @@ class CrudMethods:
     @backoff.on_exception(
         backoff.expo, requests.exceptions.RequestException, max_time=10
     )
-    def request_method(method, url, endpoint, client_id, json, headers, auth):
+    def request_method(method, url, endpoint, client_id, headers, auth=None, json=None):
         return requests.request(
             method=method,
             url=f"{url}{endpoint}{client_id}",
-            json=json,
             headers=headers,
             auth=auth,
+            json=json,
         )
