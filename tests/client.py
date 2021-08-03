@@ -1,12 +1,9 @@
-import os
 import pytest
-import sys
 import unittest
 
 from assertpy import assert_that, soft_assertions
 from requests.auth import HTTPBasicAuth
 
-sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 from http_constants.headers import HttpHeaders
 from libs.config import Config
 from libs.crud_methods import CrudMethods
@@ -16,24 +13,21 @@ from libs.crud_methods import CrudMethods
 class TestClientEndpoint(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        config = Config()
+        cls.config = Config()
         cls.cm = CrudMethods()
-        cls.url = config.URL
-        cls.username = config.USR
-        cls.password = config.PWD
         cls.api_key = cls.cm.request_method(
             "POST",
-            cls.url,
+            cls.config.URL,
             "/token",
             "",
             {HttpHeaders.ACCEPT: "application/json"},
-            HTTPBasicAuth(cls.username, cls.password),
+            HTTPBasicAuth(cls.config.USR, cls.config.PWD),
         ).json()["key"]
 
     def test_01_get_client_response_200(self):
         r = self.__class__().cm.request_method(
             "GET",
-            self.url,
+            self.config.URL,
             "/clients",
             "",
             {HttpHeaders.ACCEPT: "application/json", "X-API-KEY": self.api_key},
@@ -44,7 +38,7 @@ class TestClientEndpoint(unittest.TestCase):
     def test_02_get_clients_invalid_api_key_response_403(self):
         r = self.__class__().cm.request_method(
             "GET",
-            self.url,
+            self.config.URL,
             "/clients",
             "",
             {HttpHeaders.ACCEPT: "application/json", "X-API-KEY": "invalid_api_key"},
@@ -56,7 +50,7 @@ class TestClientEndpoint(unittest.TestCase):
     def test_03_get_clients_none_api_key_response_403(self):
         r = self.__class__().cm.request_method(
             "GET",
-            self.url,
+            self.config.URL,
             "/clients",
             "",
             {HttpHeaders.ACCEPT: "application/json", "X-API-KEY": None},
@@ -64,7 +58,3 @@ class TestClientEndpoint(unittest.TestCase):
         with soft_assertions():
             assert_that(r.status_code).is_equal_to(403)
             assert_that(r.json()["message"]).is_equal_to("invalid or missing api key")
-
-
-if __name__ == "__main__":
-    unittest.main()
