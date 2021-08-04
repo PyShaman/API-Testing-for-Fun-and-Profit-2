@@ -17,8 +17,7 @@ class TestTokenEndpoint(unittest.TestCase):
         cls.cm = CrudMethods()
 
     def test_01_get_api_key_response_200(self):
-        r = self.__class__().cm.request_method(
-            "POST",
+        r = self.__class__().cm.create(
             self.config.URL,
             "/token",
             "",
@@ -30,8 +29,7 @@ class TestTokenEndpoint(unittest.TestCase):
             assert_that(r.json()["key"]).is_not_empty()
 
     def test_02_get_api_key_invalid_username_response_400(self):
-        r = self.__class__().cm.request_method(
-            "POST",
+        r = self.__class__().cm.create(
             self.config.URL,
             "/token",
             "",
@@ -43,8 +41,7 @@ class TestTokenEndpoint(unittest.TestCase):
             assert_that(r.json()["message"]).is_equal_to("invalid username or password")
 
     def test_03_get_api_key_invalid_password_response_400(self):
-        r = self.__class__().cm.request_method(
-            "POST",
+        r = self.__class__().cm.create(
             self.config.URL,
             "/token",
             "",

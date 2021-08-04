@@ -15,8 +15,7 @@ class TestClientEndpoint(unittest.TestCase):
     def setUpClass(cls) -> None:
         cls.config = Config()
         cls.cm = CrudMethods()
-        cls.api_key = cls.cm.request_method(
-            "POST",
+        cls.api_key = cls.cm.create(
             cls.config.URL,
             "/token",
             "",
@@ -25,8 +24,7 @@ class TestClientEndpoint(unittest.TestCase):
         ).json()["key"]
 
     def test_01_get_client_response_200(self):
-        r = self.__class__().cm.request_method(
-            "GET",
+        r = self.__class__().cm.read(
             self.config.URL,
             "/clients",
             "",
@@ -36,8 +34,7 @@ class TestClientEndpoint(unittest.TestCase):
             assert_that(r.status_code).is_equal_to(200)
 
     def test_02_get_clients_invalid_api_key_response_403(self):
-        r = self.__class__().cm.request_method(
-            "GET",
+        r = self.__class__().cm.read(
             self.config.URL,
             "/clients",
             "",
@@ -48,8 +45,7 @@ class TestClientEndpoint(unittest.TestCase):
             assert_that(r.json()["message"]).is_equal_to("invalid or missing api key")
 
     def test_03_get_clients_none_api_key_response_403(self):
-        r = self.__class__().cm.request_method(
-            "GET",
+        r = self.__class__().cm.read(
             self.config.URL,
             "/clients",
             "",
