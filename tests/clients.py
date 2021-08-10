@@ -2,33 +2,6 @@ import pytest
 
 from assertpy import assert_that, soft_assertions
 from http_constants.headers import HttpHeaders
-from libs.config import Config
-from libs.crud_methods import CrudMethods
-from requests.auth import HTTPBasicAuth
-
-
-@pytest.fixture
-def config():
-    _config = Config()
-    return _config
-
-
-@pytest.fixture
-def crud():
-    cm = CrudMethods()
-    return cm
-
-
-@pytest.fixture
-def api_key(config, crud):
-    key = crud.create(
-        config.URL,
-        "/token",
-        "",
-        {HttpHeaders.ACCEPT: "application/json"},
-        HTTPBasicAuth(config.USR, config.PWD),
-    ).json()["key"]
-    return key
 
 
 @pytest.mark.clients

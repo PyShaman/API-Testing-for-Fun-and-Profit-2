@@ -2,21 +2,7 @@ import pytest
 
 from assertpy import assert_that, soft_assertions
 from http_constants.headers import HttpHeaders
-from libs.config import Config
-from libs.crud_methods import CrudMethods
 from requests.auth import HTTPBasicAuth
-
-
-@pytest.fixture
-def config():
-    _config = Config()
-    return _config
-
-
-@pytest.fixture
-def crud():
-    cm = CrudMethods()
-    return cm
 
 
 @pytest.mark.auth
