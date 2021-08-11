@@ -43,7 +43,7 @@ This will automatically download and install all necessary packages.
 
 To run all tests use following command:
 ```
-$ pytest -v
+$ pytest -v -s
 ```
 
 ### Output:

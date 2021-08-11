@@ -1,33 +1,35 @@
-import backoff
 import requests
+from requests.auth import HTTPBasicAuth
 
-from functools import partial
+
+def request_method(method):
+    def decorator(response):
+        def wrapper(*args, **kwargs):
+            return requests.request(method, *args, **kwargs)
+
+        return wrapper
+
+    return decorator
 
 
-class CrudMethods:
-    @staticmethod
-    @backoff.on_exception(backoff.expo, requests.exceptions.RequestException, max_time=3)
-    def request_method(url, endpoint, client_id, headers, auth, data, method):
-        return requests.request(
-            method=method,
-            url=f"{url}{endpoint}{client_id}",
-            headers=headers,
-            auth=auth,
-            json=data,
-        )
+@request_method("POST")
+def create_(self, url, headers, auth, json, timeout=7):
+    pass
 
-    def create(self, url, endpoint, client_id, headers, auth=None, data=None):
-        req = partial(self.request_method, method="POST")
-        return req(url, endpoint, client_id, headers, auth, data)
 
-    def read(self, url, endpoint, client_id, headers, auth=None, data=None):
-        req = partial(self.request_method, method="GET")
-        return req(url, endpoint, client_id, headers, auth, data)
+@request_method("GET")
+def read_(self, url, headers, auth, json, timeout=7):
+    pass
 
-    def update(self, url, endpoint, client_id, headers, auth=None, data=None):
-        req = partial(self.request_method, method="PUT")
-        return req(url, endpoint, client_id, headers, auth, data)
 
-    def delete(self, url, endpoint, client_id, headers, auth=None, data=None):
-        req = partial(self.request_method, method="DELETE")
-        return req(url, endpoint, client_id, headers, auth, data)
+@request_method("PUT")
+def update_(self, url, headers, auth, json, timeout=7):
+    pass
+
+
+@request_method("DELETE")
+def delete_(self, url, headers, auth, json, timeout=7):
+    pass
+
+
+print(create_("https://qa-interview-api.migo.money/token", headers={"accept": "application/json"}, auth=HTTPBasicAuth("egg", "f00BarbAz!"), json=None).status_code)
