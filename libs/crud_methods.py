@@ -31,5 +31,3 @@ def update_(self, url, headers, auth, json, timeout=7):
 def delete_(self, url, headers, auth, json, timeout=7):
     pass
 
-
-print(create_("https://qa-interview-api.migo.money/token", headers={"accept": "application/json"}, auth=HTTPBasicAuth("egg", "f00BarbAz!"), json=None).status_code)
