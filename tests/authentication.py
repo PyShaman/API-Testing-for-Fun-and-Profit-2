@@ -1,66 +1,41 @@
-import os
 import pytest
-import sys
-import unittest
 
 from assertpy import assert_that, soft_assertions
-from requests.auth import HTTPBasicAuth
-
-sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 from http_constants.headers import HttpHeaders
-from libs.config import Config
-from libs.crud_methods import CrudMethods
+from requests.auth import HTTPBasicAuth
 
 
 @pytest.mark.auth
-class TestTokenEndpoint(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls) -> None:
-        config = Config()
-        cls.cm = CrudMethods()
-        cls.url = config.URL
-        cls.username = config.USR
-        cls.password = config.PWD
-
-    def test_01_get_api_key_response_200(self):
-        r = self.__class__().cm.request_method(
-            "POST",
-            self.__class__().url,
-            "/token",
-            "",
-            {HttpHeaders.ACCEPT: "application/json"},
-            HTTPBasicAuth(self.username, self.password),
+class TestTokenEndpoint:
+    def test_01_get_api_key_response_200(self, config, create):
+        r = create(
+            f"{config.URL}/token",
+            headers={HttpHeaders.ACCEPT: "application/json"},
+            auth=HTTPBasicAuth(config.USR, config.PWD),
+            json=None,
         )
         with soft_assertions():
             assert_that(r.status_code).is_equal_to(200)
             assert_that(r.json()["key"]).is_not_empty()
 
-    def test_02_get_api_key_invalid_username_response_400(self):
-        r = self.__class__().cm.request_method(
-            "POST",
-            self.url,
-            "/token",
-            "",
-            {HttpHeaders.ACCEPT: "application/json"},
-            HTTPBasicAuth("invalid", self.password),
+    def test_02_get_api_key_invalid_username_response_400(self, config, create):
+        r = create(
+            f"{config.URL}/token",
+            headers={HttpHeaders.ACCEPT: "application/json"},
+            auth=HTTPBasicAuth("invalid", config.PWD),
+            json=None,
         )
         with soft_assertions():
             assert_that(r.status_code).is_equal_to(400)
             assert_that(r.json()["message"]).is_equal_to("invalid username or password")
 
-    def test_03_get_api_key_invalid_password_response_400(self):
-        r = self.__class__().cm.request_method(
-            "POST",
-            self.url,
-            "/token",
-            "",
-            {HttpHeaders.ACCEPT: "application/json"},
-            HTTPBasicAuth(self.username, "invalid"),
+    def test_03_get_api_key_invalid_password_response_400(self, config, create):
+        r = create(
+            f"{config.URL}/token",
+            headers={HttpHeaders.ACCEPT: "application/json"},
+            auth=HTTPBasicAuth(config.USR, "invalid"),
+            json=None,
         )
         with soft_assertions():
             assert_that(r.status_code).is_equal_to(400)
             assert_that(r.json()["message"]).is_equal_to("invalid username or password")
-
-
-if __name__ == "__main__":
-    unittest.main()
